@@ -1,0 +1,21 @@
+# OS / editors
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# local scratch and test output
+tmp/
+*.log
+__pycache__/
+*.pyc
+
+# never commit environment files or keys
+.env
+.env.*
+!*.env.template
+!*.env.tpl
+*.pem
+id_rsa*
+id_ed25519*

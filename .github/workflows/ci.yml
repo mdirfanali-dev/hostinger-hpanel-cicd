@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install linters
+        run: pip install shellcheck-py yamllint
+      - name: Lint
+        run: bash tests/lint.sh
+
+  e2e-laravel:
+    name: e2e-laravel (${{ matrix.laravel }}, PHP ${{ matrix.php }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { laravel: '^8.0', php: '8.1' }
+          - { laravel: '^9.0', php: '8.1' }
+          - { laravel: '^10.0', php: '8.2' }
+          - { laravel: '^11.0', php: '8.3' }
+          - { laravel: '^12.0', php: '8.4' }
+          - { laravel: '^13.0', php: '8.3' }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: mbstring, xml, ctype, fileinfo, pdo_sqlite, sqlite3, curl, zip, tokenizer, openssl
+          coverage: none
+      - name: Test the lite edition on a fresh Laravel ${{ matrix.laravel }} project
+        run: bash tests/lite-e2e.sh '${{ matrix.laravel }}'

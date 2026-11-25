@@ -1,0 +1,44 @@
+name: Bug report
+description: Something failed
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Do not paste secrets** (passwords, private keys, `.env` contents, real domains or IPs). Paste only masked command output.
+  - type: dropdown
+    id: stage
+    attributes:
+      label: Where did it happen?
+      options:
+        - Local precheck
+        - Rendering the templates (instantiate.py)
+        - GitHub Actions (CI)
+        - GitHub Actions (deploy)
+        - Server scaffold (prepare / cutover)
+        - After cutover (live site)
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened, and what did you expect?
+    validations:
+      required: true
+  - type: textarea
+    id: output
+    attributes:
+      label: Relevant output (masked)
+      description: Paste the LAST 30 lines of the failed step.
+      render: shell
+  - type: input
+    id: version
+    attributes:
+      label: Skill version (see the VERSION file)
+      placeholder: 0.1.0
+  - type: textarea
+    id: env
+    attributes:
+      label: Environment
+      description: Your OS, Claude Code version, Hostinger plan type, PHP version on the server (no account names).

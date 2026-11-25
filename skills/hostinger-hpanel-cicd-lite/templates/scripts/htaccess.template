@@ -1,0 +1,7 @@
+RewriteEngine On
+__HTACCESS_DEV_BLOCK__
+__HTACCESS_HTTPS_BLOCK__
+__HTACCESS_WWW_BLOCK__
+# Everything else is served from the live release's public folder (public_html/site -> prod/current/<public dir>)
+RewriteCond %{REQUEST_URI} !^/site/
+RewriteRule ^(.*)$ site/$1 [L]
